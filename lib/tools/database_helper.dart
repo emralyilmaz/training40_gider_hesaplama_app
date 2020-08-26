@@ -4,6 +4,7 @@ import 'dart:io'; // file için
 import 'package:flutter/services.dart'; // rootBundle için
 import 'package:path/path.dart'; // join için
 import 'package:training40_gider_hesaplama_app/models/kategori.dart';
+import 'package:training40_gider_hesaplama_app/models/harcama.dart';
 
 class DatabaseHelper {
   static DatabaseHelper _databaseHelper;
@@ -68,8 +69,8 @@ class DatabaseHelper {
 
     for (Map m in map) {
       kategoriListesi.add(Kategori.fromMap(m));
-      return kategoriListesi;
     }
+    return kategoriListesi;
   }
 
   Future<int> kategoriEkle(Kategori kat) async {
@@ -89,6 +90,44 @@ class DatabaseHelper {
     var db = await getDatabase();
     var sonuc = await db
         .delete("kategoriler", where: "kategoriID=?", whereArgs: [katID]);
+    return sonuc;
+  }
+
+  Future<List<Map<String, dynamic>>> harcamalariGetir() async {
+    var db = await getDatabase();
+    // var sonuc = await db.query("harcamalar"); kategori ile bağlama yapılacağından bu kullanılamaz.
+    var sonuc = await db.rawQuery(
+        "select * from harcamalar inner join kategoriler on kategoriler.kategoriID=harcamalar.kategoriID order by harcamaID Desc");
+    return sonuc;
+  }
+
+  Future<List<Harcama>> harcamaListesiniGetir() async {
+    var map = await harcamalariGetir();
+    var harcamaListesi = List<Harcama>();
+
+    for (Map m in map) {
+      harcamaListesi.add(Harcama.fromMap(m));
+    }
+    return harcamaListesi;
+  }
+
+  Future<int> harcamaEkle(Harcama har) async {
+    var db = await getDatabase();
+    var sonuc = await db.insert("harcamalar", har.toMap());
+    return sonuc;
+  }
+
+  Future<int> harcamaGuncelle(Harcama har) async {
+    var db = await getDatabase();
+    var sonuc = await db.update("harcamalar", har.toMap(),
+        where: "harcamaID = ?", whereArgs: [har.harcamaID]);
+    return sonuc;
+  }
+
+  Future<int> harcamaSil(int harID) async {
+    var db = await getDatabase();
+    var sonuc =
+        await db.delete("harcamalar", where: "harcamaID=?", whereArgs: [harID]);
     return sonuc;
   }
 }
