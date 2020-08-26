@@ -3,6 +3,7 @@ import 'package:synchronized/synchronized.dart';
 import 'dart:io'; // file için
 import 'package:flutter/services.dart'; // rootBundle için
 import 'package:path/path.dart'; // join için
+import 'package:training40_gider_hesaplama_app/models/kategori.dart';
 
 class DatabaseHelper {
   static DatabaseHelper _databaseHelper;
@@ -53,5 +54,41 @@ class DatabaseHelper {
       });
     }
     return _db;
+  }
+
+  Future<List<Map<String, dynamic>>> kategorileriGetir() async {
+    var db = await getDatabase();
+    var sonuc = await db.query("kategoriler");
+    return sonuc;
+  }
+
+  Future<List<Kategori>> kategoriListesiniGetir() async {
+    var map = await kategorileriGetir();
+    var kategoriListesi = List<Kategori>();
+
+    for (Map m in map) {
+      kategoriListesi.add(Kategori.fromMap(m));
+      return kategoriListesi;
+    }
+  }
+
+  Future<int> kategoriEkle(Kategori kat) async {
+    var db = await getDatabase();
+    var sonuc = await db.insert("kategoriler", kat.toMap());
+    return sonuc;
+  }
+
+  Future<int> kategoriGuncelle(Kategori kat) async {
+    var db = await getDatabase();
+    var sonuc = await db.update("kategoriler", kat.toMap(),
+        where: "kategoriID = ?", whereArgs: [kat.kategoriID]);
+    return sonuc;
+  }
+
+  Future<int> kategoriSil(int katID) async {
+    var db = await getDatabase();
+    var sonuc = await db
+        .delete("kategoriler", where: "kategoriID=?", whereArgs: [katID]);
+    return sonuc;
   }
 }
