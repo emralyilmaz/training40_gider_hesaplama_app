@@ -52,5 +52,6 @@ class DatabaseHelper {
         }
       });
     }
+    return _db;
   }
 }
