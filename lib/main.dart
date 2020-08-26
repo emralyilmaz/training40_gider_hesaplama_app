@@ -8,11 +8,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Gider Hesaplama Uygulaması",
       theme: ThemeData(
         primaryColor: Color.fromRGBO(3, 54, 73, 1),
         // accentColor: Color.fromRGBO(255, 184, 140, 1),
-        // scaffoldBackgroundColor: Color.fromRGBO(222, 98, 98, 1),
+        scaffoldBackgroundColor: Color.fromRGBO(232, 221, 203, 1),
       ),
       home: BottomBar(),
     );
@@ -50,6 +51,7 @@ class _BottomBarState extends State<BottomBar> {
         ],
         currentIndex: selectedIndex,
         selectedItemColor: Color.fromRGBO(3, 54, 73, 1),
+        backgroundColor: Color.fromRGBO(205, 179, 128, 1),
         onTap: _onItemTapped,
       ),
     );
