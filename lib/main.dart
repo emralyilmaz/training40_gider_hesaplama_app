@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/gider_listesi.dart';
+import 'screens/gider_listesi/gider_listesi.dart';
 import 'screens/kategori_gider_listesi.dart';
 
 void main() => runApp(MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Gider Hesaplama Uygulaması",
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(3, 54, 73, 1),
+        primaryColor: Color.fromRGBO(205, 179, 128, 1),
         // accentColor: Color.fromRGBO(255, 184, 140, 1),
         scaffoldBackgroundColor: Color.fromRGBO(232, 221, 203, 1),
       ),
