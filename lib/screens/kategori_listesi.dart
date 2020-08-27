@@ -30,7 +30,9 @@ class _KategoriListesiState extends State<KategoriListesi> {
             style: TextStyle(color: Color.fromRGBO(3, 54, 73, 1))),
         actions: [
           FlatButton(
-              onPressed: () {}, // kategori ekle
+              onPressed: () {
+                kategoriEkle();
+              }, // kategori ekle
               child: Icon(Icons.add))
         ],
       ),
@@ -38,7 +40,7 @@ class _KategoriListesiState extends State<KategoriListesi> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(kategoriler[index].kategoriAd),
-            trailing: Icon(Icons.delete_forever),
+            trailing: Icon(Icons.delete),
           );
         },
         itemCount: kategoriler.length,
@@ -52,5 +54,85 @@ class _KategoriListesiState extends State<KategoriListesi> {
         kategoriler = katList;
       });
     });
+  }
+
+  void kategoriEkle() {
+    var formKey = GlobalKey<FormState>();
+    String yeniKategoriAd;
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Text(
+                    "Kategori Ekle",
+                    style: TextStyle(
+                        color: Color.fromRGBO(3, 54, 73, 1), fontSize: 25),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Form(
+                    key: formKey,
+                    child: TextFormField(
+                      onSaved: (yeni) {
+                        yeniKategoriAd = yeni;
+                      },
+                      decoration: InputDecoration(
+                          labelText: "Kategori Ad",
+                          border: OutlineInputBorder()),
+                      validator: (girilen) {
+                        if (girilen.length <= 0) {
+                          return "Kategori Adını Giriniz";
+                        } else
+                          return null;
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: ButtonBar(
+                    children: [
+                      RaisedButton(
+                          onPressed: () {
+                            if (formKey.currentState.validate()) {
+                              formKey.currentState.save();
+                              databaseHelper
+                                  .kategoriEkle(
+                                      Kategori(kategoriAd: yeniKategoriAd))
+                                  .then((kategoriID) {
+                                if (kategoriID > 0) {
+                                  setState(() {
+                                    kategoriListesiniGuncelle();
+                                    Navigator.pop(context);
+                                  });
+                                }
+                              });
+                            }
+                          },
+                          child: Text(
+                            "Ekle",
+                          ),
+                          color: Color.fromRGBO(3, 54, 73, 1)),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Vazgeç",
+                        ),
+                        color: Color.fromRGBO(3, 54, 73, 1),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 }

@@ -59,7 +59,7 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> kategorileriGetir() async {
     var db = await getDatabase();
-    var sonuc = await db.query("kategoriler");
+    var sonuc = await db.query("kategoriler", orderBy: "kategoriID DESC");
     return sonuc;
   }
 
