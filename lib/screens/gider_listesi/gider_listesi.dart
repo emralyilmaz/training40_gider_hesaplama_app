@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:training40_gider_hesaplama_app/screens/kategori_listesi.dart';
+import 'package:training40_gider_hesaplama_app/screens/kategori_listesi/kategori_listesi.dart';
 
 class GiderListesi extends StatelessWidget {
   @override

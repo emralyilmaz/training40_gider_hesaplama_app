@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/gider_listesi/gider_listesi.dart';
-import 'screens/kategori_gider_listesi.dart';
+import 'screens/kategori_gider_listesi/kategori_gider_listesi.dart';
 
 void main() => runApp(MyApp());
 
