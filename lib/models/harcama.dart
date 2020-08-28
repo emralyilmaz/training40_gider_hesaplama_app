@@ -5,6 +5,7 @@ class Harcama {
   int harcamaTutar;
   String harcamaTarih;
   int kategoriID;
+  String kategoriAd;
 
   Harcama(
       {this.harcamaAd,
@@ -38,5 +39,6 @@ class Harcama {
     this.harcamaTutar = map["harcamaTutar"];
     this.harcamaTarih = map["harcamaTarih"];
     this.kategoriID = map["kategoriID"];
+    this.kategoriAd = map["kategoriAd"];
   }
 }
