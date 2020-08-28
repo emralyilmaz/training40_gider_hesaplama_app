@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:training40_gider_hesaplama_app/tools/database_helper.dart';
 import 'package:training40_gider_hesaplama_app/models/kategori.dart';
+import 'package:intl/intl.dart';
+import 'package:training40_gider_hesaplama_app/models/harcama.dart';
 
 class HarcamaEkle extends StatefulWidget {
   final String baslik;
@@ -22,6 +25,17 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
   DateTime harcamaTarih;
 
   @override
+  void initState() {
+    super.initState();
+    databaseHelper = DatabaseHelper();
+    tumKategoriler = List<Kategori>();
+    databaseHelper.kategoriListesiniGetir().then((katList) {
+      tumKategoriler = katList;
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding:
@@ -37,6 +51,9 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
             Padding(
               padding: EdgeInsets.all(15),
               child: TextFormField(
+                onChanged: (ad) {
+                  harcamaAd = ad;
+                },
                 decoration: InputDecoration(
                     hintText: "Harcamanız için başlık giriniz.",
                     labelText: "Başlık",
@@ -46,16 +63,26 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
             Padding(
               padding: EdgeInsets.all(15),
               child: TextFormField(
+                onChanged: (aciklama) {
+                  harcamaAciklama = aciklama;
+                },
                 maxLines: 3, // 3 satırlık açıklama alanı oluşturuldu
                 decoration: InputDecoration(
-                    hintText: "Açıklama giriniz giriniz.",
-                    labelText: "Başlık",
+                    hintText: "Harcamanız için başlık giriniz.",
+                    labelText: "Açıklama",
                     border: OutlineInputBorder()),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(15),
               child: TextFormField(
+                onChanged: (tutar) {
+                  harcamaTutar = int.parse(tutar);
+                },
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ], // klavyeden de sadece rakamların kullanılması zorlanmıs oluyor.
                 decoration: InputDecoration(
                     hintText: "Harcamanız için başlık giriniz.",
                     labelText: "Tutar",
@@ -64,11 +91,30 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
             ),
             Padding(
               padding: EdgeInsets.all(15),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    hintText: "Harcamanız için başlık giriniz.",
-                    labelText: "Tarih",
-                    border: OutlineInputBorder()),
+              child: InkWell(
+                onTap: () {
+                  showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2001),
+                          lastDate: DateTime(2025))
+                      .then((t) {
+                    setState(() {
+                      harcamaTarih = t;
+                    });
+                  });
+                },
+                child: Container(
+                  child: Center(
+                    child: Text(harcamaTarih == null
+                        ? "Harcama Tarihini Giriniz."
+                        : DateFormat.yMd().format(harcamaTarih)),
+                  ),
+                  height: 50,
+                  decoration: BoxDecoration(
+                      border:
+                          Border.all(color: Color.fromRGBO(205, 179, 128, 1))),
+                ),
               ),
             ),
             Container(
@@ -84,7 +130,11 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
                       : DropdownButton<int>(
                           items: kategoriItemOlustur(),
                           value: kategoriID,
-                          onChanged: null)),
+                          onChanged: (kategoriId) {
+                            setState(() {
+                              kategoriID = kategoriId;
+                            });
+                          })),
             ),
             ButtonBar(
               alignment: MainAxisAlignment.spaceEvenly, // butonlar arası boşluk
@@ -92,16 +142,39 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
                 RaisedButton(
                     child: Text("Kaydet"),
                     color: Color.fromRGBO(3, 54, 73, 1),
-                    onPressed: () {}),
+                    onPressed: () {
+                      databaseHelper.harcamaEkle(Harcama(
+                          harcamaAd: harcamaAd,
+                          harcamaAciklama: harcamaAciklama,
+                          harcamaTutar: harcamaTutar,
+                          harcamaTarih: harcamaTarih.toString(),
+                          kategoriID: kategoriID));
+                      Navigator.pop(context);
+                    }),
                 RaisedButton(
                     child: Text("Vazgeç"),
                     color: Color.fromRGBO(3, 54, 73, 1),
-                    onPressed: () {})
+                    onPressed: () {
+                      Navigator.pop(context);
+                    })
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem<int>> kategoriItemOlustur() {
+    return tumKategoriler
+        .map((kategori) => DropdownMenuItem<int>(
+            value: kategori.kategoriID,
+            child: Center(
+              child: Text(
+                kategori.kategoriAd,
+                style: TextStyle(fontSize: 15),
+              ),
+            )))
+        .toList();
   }
 }
