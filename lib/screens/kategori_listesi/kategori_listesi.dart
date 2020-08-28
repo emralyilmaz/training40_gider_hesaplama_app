@@ -227,6 +227,7 @@ class _KategoriListesiState extends State<KategoriListesi> {
   void kategoriSil(int katId) {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             title: Text("Kategori Sil"),

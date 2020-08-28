@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:training40_gider_hesaplama_app/screens/kategori_listesi/kategori_listesi.dart';
+import 'package:training40_gider_hesaplama_app/screens/gider_ekle/gider_ekle.dart';
 
 class GiderListesi extends StatelessWidget {
   @override
@@ -30,6 +31,17 @@ class GiderListesi extends StatelessWidget {
             },
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(3, 54, 73, 1),
+        tooltip: "Harcama Ekle",
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HarcamaEkle(baslik: "Harcama Ekle")));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
