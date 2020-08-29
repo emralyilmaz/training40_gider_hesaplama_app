@@ -5,6 +5,7 @@ import 'package:flutter/services.dart'; // rootBundle için
 import 'package:path/path.dart'; // join için
 import 'package:training40_gider_hesaplama_app/models/kategori.dart';
 import 'package:training40_gider_hesaplama_app/models/harcama.dart';
+import 'package:training40_gider_hesaplama_app/models/yeni_kategori_harcama/kategori_harcama.dart';
 
 class DatabaseHelper {
   static DatabaseHelper _databaseHelper;
@@ -136,5 +137,22 @@ class DatabaseHelper {
     List<Map> list = await db
         .rawQuery("select SUM(harcamaTutar) as harcamaTutar from harcamalar");
     return list.isNotEmpty ? list[0]["harcamaTutar"] : Null;
+  }
+
+  Future<List<Map<String, dynamic>>> kategoriyeGoreHarcamalariGetir() async {
+    var db = await getDatabase();
+    var sonuc = await db.rawQuery(
+        "select SUM(harcamaTutar) as harcamaTutar kategoriAd from harcamalar inner join kategoriler on kategoriler.kategoriID=harcamalar.kategoriID group by kategoriAd");
+    return sonuc;
+  }
+
+  Future<List<KategoriHarcama>> kategoriyeGoreHarcamaListesiniGetir() async {
+    var map = await kategoriyeGoreHarcamaListesiniGetir();
+    var harcamaListesi = List<KategoriHarcama>();
+
+    for (Map m in map) {
+      harcamaListesi.add(KategoriHarcama.fromMap(m));
+    }
+    return harcamaListesi;
   }
 }
