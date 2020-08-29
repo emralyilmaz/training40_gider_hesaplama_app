@@ -130,4 +130,11 @@ class DatabaseHelper {
         await db.delete("harcamalar", where: "harcamaID=?", whereArgs: [harID]);
     return sonuc;
   }
+
+  Future<int> toplamHarcamalarGetir() async {
+    var db = await getDatabase();
+    List<Map> list = await db
+        .rawQuery("select SUM(harcamaTutar) as harcamaTutar from harcamalar");
+    return list.isNotEmpty ? list[0]["harcamaTutar"] : Null;
+  }
 }

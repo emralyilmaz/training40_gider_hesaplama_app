@@ -4,6 +4,7 @@ import 'package:training40_gider_hesaplama_app/screens/kategori_listesi/kategori
 import 'package:training40_gider_hesaplama_app/screens/gider_ekle/gider_ekle.dart';
 import 'package:training40_gider_hesaplama_app/tools/database_helper.dart';
 import 'package:training40_gider_hesaplama_app/models/harcama.dart';
+import 'package:training40_gider_hesaplama_app/screens/toplam_harcama/toplam_harcama.dart';
 
 class GiderListesi extends StatelessWidget {
   @override
@@ -20,6 +21,18 @@ class GiderListesi extends StatelessWidget {
               return [
                 PopupMenuItem(
                     child: ListTile(
+                  title: Text("Toplam Harcamalar"),
+                  leading: Icon(
+                    Icons.attach_money,
+                    color: Color.fromRGBO(3, 54, 73, 1),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    toplamGidereGit(context);
+                  },
+                )),
+                PopupMenuItem(
+                    child: ListTile(
                   title: Text("Kategoriler"),
                   leading: Icon(
                     Icons.category,
@@ -29,7 +42,7 @@ class GiderListesi extends StatelessWidget {
                     Navigator.pop(context);
                     kategoriListesineGit(context);
                   },
-                ))
+                )),
               ];
             },
           )
@@ -55,6 +68,11 @@ class GiderListesi extends StatelessWidget {
   void kategoriListesineGit(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => KategoriListesi()));
+  }
+
+  void toplamGidereGit(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ToplamHarcama()));
   }
 }
 

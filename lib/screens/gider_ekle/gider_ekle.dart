@@ -68,7 +68,7 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
                 },
                 maxLines: 3, // 3 satırlık açıklama alanı oluşturuldu
                 decoration: InputDecoration(
-                    hintText: "Harcamanız için başlık giriniz.",
+                    hintText: "Harcamanız için açıklama giriniz.",
                     labelText: "Açıklama",
                     border: OutlineInputBorder()),
               ),
@@ -84,7 +84,7 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
                   WhitelistingTextInputFormatter.digitsOnly
                 ], // klavyeden de sadece rakamların kullanılması zorlanmıs oluyor.
                 decoration: InputDecoration(
-                    hintText: "Harcamanız için başlık giriniz.",
+                    hintText: "Harcamanız için tutar giriniz.",
                     labelText: "Tutar",
                     border: OutlineInputBorder()),
               ),
@@ -153,7 +153,7 @@ class _HarcamaEkleState extends State<HarcamaEkle> {
                     }),
                 RaisedButton(
                     child: Text("Vazgeç"),
-                    color: Color.fromRGBO(3, 54, 73, 1),
+                    color: Color.fromRGBO(205, 179, 128, 1),
                     onPressed: () {
                       Navigator.pop(context);
                     })

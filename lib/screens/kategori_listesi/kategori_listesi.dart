@@ -213,7 +213,7 @@ class _KategoriListesiState extends State<KategoriListesi> {
                         child: Text(
                           "Vazgeç",
                         ),
-                        color: Color.fromRGBO(3, 54, 73, 1),
+                        color: Color.fromRGBO(205, 179, 128, 1),
                       ),
                     ],
                   ),

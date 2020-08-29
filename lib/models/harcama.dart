@@ -17,8 +17,8 @@ class Harcama {
       {this.harcamaID,
       this.harcamaAd,
       this.harcamaAciklama,
-      this.harcamaTutar,
       this.harcamaTarih,
+      this.harcamaTutar,
       this.kategoriID});
 
   Map<String, dynamic> toMap() {
@@ -26,8 +26,8 @@ class Harcama {
     map["harcamaID"] = harcamaID;
     map["harcamaAd"] = harcamaAd;
     map["harcamaAciklama"] = harcamaAciklama;
-    map["harcamaTutar"] = harcamaTutar;
     map["harcamaTarih"] = harcamaTarih;
+    map["harcamaTutar"] = harcamaTutar;
     map["kategoriID"] = kategoriID;
     return map;
   }
@@ -36,8 +36,8 @@ class Harcama {
     this.harcamaID = map["harcamaID"];
     this.harcamaAd = map["harcamaAd"];
     this.harcamaAciklama = map["harcamaAciklama"];
-    this.harcamaTutar = map["harcamaTutar"];
     this.harcamaTarih = map["harcamaTarih"];
+    this.harcamaTutar = int.parse(map["harcamaTutar"] ?? "0");
     this.kategoriID = map["kategoriID"];
     this.kategoriAd = map["kategoriAd"];
   }
